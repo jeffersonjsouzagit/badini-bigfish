@@ -1,0 +1,9 @@
+{
+  "name": "badini-bigfish",
+  "version": "1.0.0",
+  "description": "E-commerce Badini Big Fish",
+  "scripts": {
+    "build": "cd server && npm install && npx prisma generate && npx prisma migrate deploy && node prisma/seed.js",
+    "start": "cd server && node src/server.js"
+  }
+}
