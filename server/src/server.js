@@ -13,6 +13,7 @@ const orderRoutes = require('./routes/order.routes');
 const customerRoutes = require('./routes/customer.routes');
 const paymentRoutes = require('./routes/payment.routes');
 const adminRoutes = require('./routes/admin.routes');
+const prisma = require('./config/database');
 
 const app = express();
 
@@ -87,8 +88,13 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/admin', adminRoutes);
 
 // Rota de health check
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/api/health', async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({ status: 'ok', db: 'connected', timestamp: new Date().toISOString() });
+  } catch (e) {
+    res.json({ status: 'ok', db: 'error', dbError: e.message, timestamp: new Date().toISOString() });
+  }
 });
 
 // ============================================
