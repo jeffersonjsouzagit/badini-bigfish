@@ -2,9 +2,7 @@
 // BADINI BIG FISH - API CLIENT
 // ============================================
 
-const API_BASE = window.location.hostname === 'localhost' 
-  ? `${window.location.origin}/api` 
-  : 'https://api.badinibigfish.com.br/api';
+const API_BASE = `${window.location.origin}/api`;
 
 class ApiClient {
   constructor() {
