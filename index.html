@@ -3840,6 +3840,7 @@
 
         // ====== CHECKOUT ======
         let coSelectedAddress = -1;
+        let coAddresses = [];
         let coManualMode = false;
 
         function openCheckout() {
@@ -3871,8 +3872,15 @@
             document.body.style.overflow = 'hidden';
         }
 
-        function renderCoAddresses() {
-            const addresses = getUserAddresses();
+        async function renderCoAddresses() {
+            let addresses = [];
+            try {
+                const result = await api.getAddresses();
+                addresses = result.addresses || [];
+            } catch (e) {
+                addresses = [];
+            }
+            coAddresses = addresses;
             const listEl = document.getElementById('coAddressList');
             const formEl = document.getElementById('coAddressForm');
             const toggleBtn = document.getElementById('coToggleAddress');
@@ -3924,8 +3932,7 @@
         }
 
         function selectCoAddress(index) {
-            const addresses = getUserAddresses();
-            const addr = addresses[index];
+            const addr = coAddresses[index];
             if (!addr) return;
 
             coSelectedAddress = index;
