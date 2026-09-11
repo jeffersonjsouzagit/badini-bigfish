@@ -126,9 +126,32 @@ app.use((err, req, res, next) => {
 // ============================================
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-  console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
-});
+async function startServer() {
+  // Em producao, rodar migrate e seed automaticamente
+  if (process.env.NODE_ENV === 'production') {
+    const { execSync } = require('child_process');
+    try {
+      console.log('Rodando prisma migrate deploy...');
+      execSync('npx prisma migrate deploy', { cwd: path.join(__dirname, '..'), stdio: 'inherit' });
+      console.log('Migrate concluido!');
+    } catch (e) {
+      console.error('Erro no migrate:', e.message);
+    }
+    try {
+      console.log('Rodando seed...');
+      execSync('node prisma/seed.js', { cwd: path.join(__dirname, '..'), stdio: 'inherit' });
+      console.log('Seed concluido!');
+    } catch (e) {
+      console.error('Erro no seed:', e.message);
+    }
+  }
+
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
+  });
+}
+
+startServer();
 
 module.exports = app;
