@@ -43,8 +43,9 @@ enum UserRole {
 model Address {
   id            String    @id @default(cuid())
   userId        String
+  label         String?
   street        String
-  number        String
+  number        String?
   complement    String?
   neighborhood  String
   city          String

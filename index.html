@@ -4158,7 +4158,7 @@
                 return;
             }
 
-            const addrData = { label, street, neighborhood, city, state, zip, complement };
+            const addrData = { label, street, number: '', neighborhood, city, state, zipCode: zip, complement };
 
             try {
                 if (editId && editId !== '-1') {

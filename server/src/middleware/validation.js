@@ -86,15 +86,17 @@ const orderSchema = z.object({
 
 // Endereco
 const addressSchema = z.object({
+  label: z.string().max(50).optional(),
   street: z.string().min(1, 'Rua e obrigatoria').max(200),
-  number: z.string().min(1, 'Numero e obrigatorio').max(20),
+  number: z.string().max(20).optional(),
   complement: z.string().max(100).optional(),
   neighborhood: z.string().min(1, 'Bairro e obrigatorio').max(100),
   city: z.string().min(1, 'Cidade e obrigatoria').max(100),
   state: z.string().min(2, 'Estado e obrigatorio').max(2),
-  zipCode: z.string().min(8, 'CEP invalido').max(9),
+  zipCode: z.string().min(8, 'CEP invalido').max(9).optional(),
+  zip: z.string().min(8, 'CEP invalido').max(9).optional(),
   isDefault: z.boolean().optional(),
-});
+}).refine((data) => data.zipCode || data.zip, { message: 'CEP e obrigatorio' });
 
 module.exports = {
   validate,
