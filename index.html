@@ -3597,6 +3597,7 @@
 
                 // Salvar dados do usuario
                 localStorage.setItem('bbf_user', JSON.stringify(result.user));
+                saveSession({ name: result.user.name, email: result.user.email, phone: result.user.phone, createdAt: result.user.createdAt });
 
                 closeAuth();
                 updateUIForSession(result.user);
@@ -3618,6 +3619,7 @@
 
                 // Salvar dados do usuario
                 localStorage.setItem('bbf_user', JSON.stringify(result.user));
+                saveSession({ name: result.user.name, email: result.user.email, phone: result.user.phone, createdAt: result.user.createdAt });
 
                 closeAuth();
                 updateUIForSession(result.user);
