@@ -3900,7 +3900,7 @@
                             <div class="addr-label">${addr.label}</div>
                             <div class="addr-detail">
                                 ${addr.street}${addr.complement ? ', ' + addr.complement : ''}<br>
-                                ${addr.neighborhood} - ${addr.city}/${addr.state} | CEP: ${addr.zip}
+                                ${addr.neighborhood} - ${addr.city}/${addr.state} | CEP: ${addr.zipCode || addr.zip}
                             </div>
                         </div>
                     </div>
@@ -3935,7 +3935,7 @@
             document.getElementById('coNeighborhood').value = addr.neighborhood;
             document.getElementById('coCity').value = addr.city;
             document.getElementById('coState').value = addr.state;
-            document.getElementById('coZip').value = addr.zip;
+            document.getElementById('coZip').value = addr.zipCode || addr.zip;
             document.getElementById('coComplement').value = addr.complement || '';
 
             // Atualizar selecao visual
@@ -4115,7 +4115,7 @@
                             </div>
                             <p>${addr.street}${addr.complement ? ', ' + addr.complement : ''}</p>
                             <p>${addr.neighborhood} - ${addr.city}/${addr.state}</p>
-                            <p>CEP: ${addr.zip}</p>
+                            <p>CEP: ${addr.zipCode || addr.zip || '-'}</p>
                         </div>
                     `).join('');
                 })
@@ -4190,7 +4190,7 @@
                     document.getElementById('addrNeighborhood').value = addr.neighborhood;
                     document.getElementById('addrCity').value = addr.city;
                     document.getElementById('addrState').value = addr.state;
-                    document.getElementById('addrZip').value = addr.zip;
+                    document.getElementById('addrZip').value = addr.zipCode || addr.zip;
                     document.getElementById('addrComplement').value = addr.complement || '';
                     document.getElementById('addressOverlay').classList.add('active');
                 }
