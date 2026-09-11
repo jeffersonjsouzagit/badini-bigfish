@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data: blob:;">
+    <title>Produto | Badini Big Fish</title>
+    <meta name="description" content="Detalhes do produto Badini Big Fish - Massas e racoes artesanais para pesca.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css">
+    <style>
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --verde-escuro:#1c3f6e; --verde-medio:#2570a8; --verde-claro:#3db8e8;
+            --dourado:#f0b820; --dourado-escuro:#d4a018;
+            --bg-escuro:#2a2520;             --bg-card:#2a2520; --bg-card-hover:#332e26;
+            --texto-claro:#e8e0d4; --texto-medio:#b0a898; --texto-escuro:#706860;
+            --borda:#4a423a; --vermelho:#c0392b;
+            --radius:8px; --radius-lg:12px; --transition:all .3s ease;
+        }
+        html { scroll-behavior:smooth; }
+        body { font-family:'Open Sans',sans-serif; background:var(--bg-escuro); color:var(--texto-claro); line-height:1.6; overflow-x:hidden; }
+        h1,h2,h3,h4,h5,h6 { font-family:'Oswald',sans-serif; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+        a { text-decoration:none; color:inherit; }
+        img { max-width:100%; display:block; }
+        button { cursor:pointer; border:none; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:1px; }
+
+        /* HEADER */
+        .header { position:fixed; top:0; left:0; width:100%; z-index:1000; background:rgba(42,37,32,.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--borda); }
+        .nav { max-width:1400px; margin:0 auto; padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:70px; }
+        .logo { display:flex; align-items:center; gap:12px; }
+        .logo-icon { width:50px; height:50px; border-radius:50%; overflow:hidden; flex-shrink:0; }
+        .logo-icon img { width:100%; height:100%; object-fit:cover; }
+        .logo-text { font-family:'Oswald',sans-serif; font-size:1.3rem; font-weight:700; line-height:1.1; }
+        .logo-text span { display:block; font-size:.65rem; color:var(--dourado); font-weight:400; letter-spacing:3px; }
+        .nav-links { display:flex; align-items:center; gap:30px; list-style:none; }
+        .nav-links a { font-family:'Oswald',sans-serif; font-size:.85rem; font-weight:500; color:var(--texto-medio); text-transform:uppercase; letter-spacing:1.5px; transition:var(--transition); position:relative; }
+        .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--dourado); transition:var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color:var(--dourado); }
+        .nav-links a:hover::after, .nav-links a.active::after { width:100%; }
+        .cart-btn { position:relative; background:transparent; color:var(--texto-claro); font-size:1.3rem; padding:8px; transition:var(--transition); }
+        .cart-btn:hover { color:var(--dourado); }
+        .cart-count { position:absolute; top:0; right:-2px; background:var(--vermelho); color:#fff; font-size:.65rem; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Oswald',sans-serif; font-weight:600; }
+        .cart-count.empty { display:none; }
+        .menu-toggle { display:none; background:none; color:var(--texto-claro); font-size:1.5rem; padding:5px; }
+
+        /* BREADCRUMB */
+        .breadcrumb { max-width:1200px; margin:90px auto 0; padding:15px 20px; display:flex; align-items:center; gap:8px; font-size:.8rem; color:var(--texto-escuro); }
+        .breadcrumb a { color:var(--texto-medio); transition:var(--transition); }
+        .breadcrumb a:hover { color:var(--dourado); }
+        .breadcrumb .sep { color:var(--borda); }
+
+        /* PRODUTO DETALHE */
+        .produto-detalhe { max-width:1200px; margin:0 auto; padding:20px 20px 80px; display:grid; grid-template-columns:1.2fr 1fr; gap:40px; }
+
+        /* GALERIA */
+        .detalhe-gallery { position:sticky; top:90px; }
+        .detalhe-gallery-main { width:100%; aspect-ratio:1; background:linear-gradient(135deg,#29241f,#231f1a); border-radius:var(--radius-lg); overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative; margin-bottom:10px; }
+        .detalhe-gallery-main img, .detalhe-gallery-main video { width:100%; height:100%; object-fit:contain; padding:20px; }
+        .gallery-nav { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; background:rgba(0,0,0,.1); border:1px solid rgba(0,0,0,0.15); border-radius:50%; color:#fff; font-size:1.2rem; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--transition); z-index:5; }
+        .gallery-nav:hover { background:rgba(200,169,81,.7); border-color:var(--dourado); }
+        .gallery-nav.prev { left:12px; }
+        .gallery-nav.next { right:12px; }
+        .detalhe-gallery-thumbs { display:flex; gap:6px; overflow-x:auto; justify-content:center; padding:4px 0; }
+        .detalhe-gallery-thumbs::-webkit-scrollbar { height:0; }
+        .detalhe-thumb { width:52px; height:52px; border-radius:6px; overflow:hidden; cursor:pointer; border:2px solid transparent; transition:var(--transition); flex-shrink:0; opacity:.6; }
+        .detalhe-thumb.active, .detalhe-thumb:hover { border-color:var(--dourado); opacity:1; }
+        .detalhe-thumb img { width:100%; height:100%; object-fit:cover; }
+        .detalhe-thumb .video-icon { width:100%; height:100%; background:rgba(0,0,0,.25); display:flex; align-items:center; justify-content:center; font-size:.85rem; color:var(--dourado); }
+
+        /* INFO */
+        .detalhe-info { padding:10px 0; }
+        .detalhe-categoria { color:var(--dourado); font-size:.72rem; font-weight:600; text-transform:uppercase; letter-spacing:2px; margin-bottom:8px; }
+        .detalhe-info h1 { font-size:clamp(1.5rem,3vw,2.2rem); margin-bottom:12px; line-height:1.2; }
+        .detalhe-preco { font-family:'Oswald',sans-serif; font-size:2rem; color:var(--dourado); font-weight:700; margin-bottom:20px; }
+        .detalhe-desc { color:var(--texto-medio); font-size:.92rem; line-height:1.6; margin-bottom:20px; }
+        .detalhe-specs { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; }
+        .detalhe-spec { padding:12px; background:rgba(0,0,0,.05); border-radius:var(--radius); }
+        .detalhe-spec .label { font-size:.68rem; color:var(--texto-escuro); text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:3px; }
+        .detalhe-spec .value { font-family:'Oswald',sans-serif; font-size:.9rem; }
+
+        /* OPCOES */
+        .detalhe-options { margin-bottom:20px; }
+        .detalhe-options label { font-family:'Oswald',sans-serif; font-size:.75rem; color:var(--texto-medio); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:8px; display:block; }
+        .option-buttons { display:flex; gap:8px; flex-wrap:wrap; }
+        .option-btn { background:rgba(255,255,255,0.06); border:1px solid var(--borda); color:var(--texto-medio); padding:8px 16px; border-radius:var(--radius); font-size:.78rem; transition:var(--transition); }
+        .option-btn:hover { border-color:var(--dourado); color:var(--dourado); }
+        .option-btn.active { background:var(--dourado); border-color:var(--dourado); color:var(--bg-escuro); }
+
+        /* QTD + ADD */
+        .detalhe-actions { display:flex; align-items:center; gap:15px; margin-bottom:20px; padding:20px 0; border-top:1px solid var(--borda); border-bottom:1px solid var(--borda); }
+        .qty-control { display:flex; border:1px solid var(--borda); border-radius:var(--radius); overflow:hidden; }
+        .qty-btn { width:36px; height:36px; background:rgba(255,255,255,0.06); color:var(--texto-claro); font-size:1rem; display:flex; align-items:center; justify-content:center; transition:var(--transition); }
+        .qty-btn:hover { background:var(--dourado); color:var(--bg-escuro); }
+        .qty-value { width:40px; text-align:center; font-family:'Oswald',sans-serif; font-size:1rem; }
+        .add-btn { flex:1; background:linear-gradient(135deg,var(--dourado),var(--dourado-escuro)); color:var(--bg-escuro); padding:12px 24px; border-radius:var(--radius); font-size:.9rem; font-weight:600; transition:var(--transition); }
+        .add-btn:hover { transform:translateY(-2px); box-shadow:0 4px 15px rgba(200,169,81,.3); }
+
+        /* DICA */
+        .detalhe-dica { background:rgba(200,169,81,.08); border-left:3px solid var(--dourado); padding:15px; border-radius:0 var(--radius) var(--radius) 0; margin-bottom:20px; }
+        .detalhe-dica h4 { color:var(--dourado); font-size:.78rem; margin-bottom:6px; }
+        .detalhe-dica p { color:var(--texto-medio); font-size:.82rem; line-height:1.5; }
+
+        /* PRODUTOS RELACIONADOS */
+        .relacionados { max-width:1200px; margin:0 auto; padding:0 20px 80px; }
+        .relacionados h2 { font-size:1.5rem; margin-bottom:25px; text-align:center; }
+        .relacionados h2 span { color:var(--dourado); }
+        .relacionados-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px; }
+
+        /* TOAST */
+        .toast { position:fixed; bottom:30px; right:30px; background:var(--verde-medio); color:#fff; padding:14px 22px; border-radius:var(--radius); font-family:'Oswald',sans-serif; font-size:.88rem; z-index:5000; transform:translateY(100px); opacity:0; transition:all .4s cubic-bezier(.25,.8,.25,1); display:flex; align-items:center; gap:10px; box-shadow:0 4px 20px rgba(0,0,0,.4); }
+        .toast.show { transform:translateY(0); opacity:1; }
+
+        /* FOOTER */
+        .footer { background:var(--bg-card); border-top:1px solid var(--borda); padding:40px 20px 25px; }
+        .footer-content { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr; gap:30px; }
+        .footer-brand h3 { font-size:1.2rem; margin-bottom:12px; }
+        .footer-brand h3 span { color:var(--dourado); }
+        .footer-brand p { color:var(--texto-medio); font-size:.85rem; }
+        .footer-links h4 { font-size:.85rem; color:var(--dourado); margin-bottom:12px; }
+        .footer-links ul { list-style:none; }
+        .footer-links li { margin-bottom:6px; }
+        .footer-links a { color:var(--texto-medio); font-size:.82rem; transition:var(--transition); }
+        .footer-links a:hover { color:var(--dourado); }
+        .footer-bottom { max-width:1200px; margin:25px auto 0; padding-top:18px; border-top:1px solid var(--borda); text-align:center; color:var(--texto-escuro); font-size:.78rem; }
+
+        /* CARRINHO SIDEBAR */
+        .cart-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.15); z-index:3000; display:none; backdrop-filter:blur(3px); }
+        .cart-overlay.active { display:block; }
+        .cart-sidebar { position:fixed; top:0; right:-420px; width:400px; max-width:90vw; height:100%; background:var(--bg-card); z-index:3001; transition:right .4s cubic-bezier(.25,.8,.25,1); display:flex; flex-direction:column; border-left:1px solid var(--borda); }
+        .cart-sidebar.active { right:0; }
+        .cart-header { padding:20px 25px; border-bottom:1px solid var(--borda); display:flex; align-items:center; justify-content:space-between; }
+        .cart-header h3 { font-size:1.1rem; }
+        .cart-close { background:none; color:var(--texto-medio); font-size:1.3rem; transition:var(--transition); }
+        .cart-close:hover { color:var(--vermelho); }
+        .cart-items { flex:1; overflow-y:auto; padding:20px 25px; }
+        .cart-empty { text-align:center; padding:50px 20px; color:var(--texto-escuro); }
+        .cart-empty .icon { font-size:3rem; margin-bottom:15px; opacity:.3; }
+        .cart-item { display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--borda); }
+        .cart-item-img { width:55px; height:55px; background:rgba(0,0,0,.05); border-radius:var(--radius); overflow:hidden; flex-shrink:0; }
+        .cart-item-img img { width:100%; height:100%; object-fit:cover; }
+        .cart-item-info { flex:1; }
+        .cart-item-info h4 { font-size:.82rem; margin-bottom:3px; }
+        .cart-item-info .meta { font-size:.72rem; color:var(--texto-escuro); }
+        .cart-item-info .price { font-family:'Oswald',sans-serif; color:var(--dourado); font-size:.9rem; margin-top:3px; }
+        .cart-item-qty { display:flex; align-items:center; gap:8px; margin-top:6px; }
+        .qty-btn { width:26px; height:26px; border-radius:4px; border:1px solid var(--borda); background:rgba(255,255,255,0.06); color:var(--texto-claro); font-size:1rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:var(--transition); }
+        .qty-btn:hover { background:var(--verde-medio); border-color:var(--verde-medio); color:#fff; }
+        .qty-value { font-family:'Oswald',sans-serif; font-size:.95rem; color:var(--texto-claro); min-width:20px; text-align:center; }
+        .cart-item-remove { background:none; color:var(--texto-escuro); font-size:.95rem; transition:var(--transition); align-self:flex-start; padding:4px; }
+        .cart-item-remove:hover { color:var(--vermelho); }
+        .cart-footer { padding:20px 25px; border-top:1px solid var(--borda); background:rgba(0,0,0,.03); }
+        .clear-cart-btn { width:100%; padding:10px; margin-bottom:15px; background:transparent; border:1px solid var(--vermelho); color:var(--vermelho); font-family:'Oswald',sans-serif; font-size:.85rem; text-transform:uppercase; letter-spacing:1px; cursor:pointer; border-radius:var(--radius); transition:var(--transition); }
+        .clear-cart-btn:hover { background:var(--vermelho); color:#fff; }
+        .cart-total { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+        .cart-total span:first-child { font-family:'Oswald',sans-serif; font-size:.9rem; color:var(--texto-medio); text-transform:uppercase; letter-spacing:1px; }
+        .cart-total span:last-child { font-family:'Oswald',sans-serif; font-size:1.4rem; color:var(--dourado); font-weight:700; }
+        .checkout-btn { width:100%; background:linear-gradient(135deg,var(--verde-medio),var(--verde-escuro)); color:#fff; padding:15px; border-radius:var(--radius); font-size:.9rem; font-weight:600; transition:var(--transition); display:flex; align-items:center; justify-content:center; gap:10px; }
+        .checkout-btn:hover { transform:translateY(-2px); box-shadow:0 4px 15px rgba(45,90,63,.4); }
+
+        /* LOADING */
+        .loading { text-align:center; padding:80px 20px; color:var(--texto-escuro); }
+        .loading .spinner { width:40px; height:40px; border:3px solid var(--borda); border-top-color:var(--dourado); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 15px; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* RESPONSIVO */
+        @media(max-width:900px) {
+            .produto-detalhe { grid-template-columns:1fr; }
+            .detalhe-gallery { position:static; }
+            .footer-content { grid-template-columns:1fr; }
+        }
+        @media(max-width:768px) {
+            .nav-links { display:none; position:absolute; top:70px; left:0; right:0; background:var(--bg-card); flex-direction:column; padding:20px; gap:15px; border-bottom:1px solid var(--borda); }
+            .nav-links.active { display:flex; }
+            .menu-toggle { display:block; }
+            .detalhe-specs { grid-template-columns:1fr; }
+        }
+
+        ::-webkit-scrollbar { width:8px; }
+        ::-webkit-scrollbar-track { background:var(--bg-escuro); }
+        ::-webkit-scrollbar-thumb { background:var(--borda); border-radius:4px; }
+        ::-webkit-scrollbar-thumb:hover { background:var(--dourado); }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><img src="Logo.png" alt="Badini Big Fish"></div>
+                <div class="logo-text">Badini Big Fish<span>Artesanal</span></div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="produtos.html" class="active">Produtos</a></li>
+                <li><a href="index.html#sobre">Sobre</a></li>
+                <li><a href="index.html#contato">Contato</a></li>
+            </ul>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <button class="cart-btn" onclick="toggleCart()"><i class="fa-solid fa-cart-shopping"></i><span class="cart-count empty" id="cartCount">0</span></button>
+                <button class="menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('active')">&#9776;</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a href="index.html">Inicio</a>
+        <span class="sep">/</span>
+        <a href="produtos.html">Produtos</a>
+        <span class="sep">/</span>
+        <span id="breadcrumbName">Carregando...</span>
+    </div>
+
+    <!-- PRODUTO DETALHE -->
+    <main class="produto-detalhe" id="produtoDetalhe">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Carregando produto...</p>
+        </div>
+    </main>
+
+    <!-- PRODUTOS RELACIONADOS -->
+    <section class="relacionados" id="relacionadosSection" style="display:none;">
+        <h2>Voce tambem pode <span>gostar</span></h2>
+        <div class="relacionados-grid" id="relacionadosGrid"></div>
+    </section>
+
+    <!-- CARRINHO SIDEBAR -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Meu Carrinho</h3>
+            <button class="cart-close" onclick="toggleCart()">&#10005;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <div class="icon"><i class="fa-solid fa-fish"></i></div>
+                <p>Seu carrinho esta vazio.</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <button class="clear-cart-btn" onclick="clearCart()">Limpar Carrinho</button>
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cartTotal">R$ 0,00</span>
+            </div>
+            <button class="checkout-btn" onclick="goCheckout()"><i class="fa-solid fa-cart-shopping"></i> Finalizar Pedido</button>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>Badini Big Fish <span>Artesanal</span></h3>
+                <p>Mais de 10 anos levando Quality e resultado para os pescadores. Nossas massas e racoes sao feitas com ingredientes selecionados.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navegacao</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="produtos.html">Produtos</a></li>
+                    <li><a href="index.html#sobre">Sobre</a></li>
+                    <li><a href="index.html#contato">Contato</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Suporte</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Politica de Troca</a></li>
+                    <li><a href="#">Termos de Uso</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">&copy; 2026 Badini Big Fish. Todos os direitos reservados.</div>
+    </footer>
+
+    <script src="client/js/api.js"></script>
+    <script src="client/js/produto.js"></script>
+</body>
+</html>

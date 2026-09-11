@@ -1,0 +1,203 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// MODELOS
+// ============================================
+
+// Clientes/Usuarios
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  phone         String?
+  cpf           String?   @unique
+  role          UserRole  @default(CUSTOMER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relacoes
+  addresses     Address[]
+  orders        Order[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+// Enderecos
+model Address {
+  id            String    @id @default(cuid())
+  userId        String
+  street        String
+  number        String
+  complement    String?
+  neighborhood  String
+  city          String
+  state         String
+  zipCode       String
+  isDefault     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relacoes
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders        Order[]
+
+  @@map("addresses")
+}
+
+// Produtos
+model Product {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  name          String
+  description   String
+  fullDescription String?
+  category      String
+  price         Decimal   @db.Decimal(10, 2)
+  badge         String?
+  imageUrl      String?
+  videoUrl      String?
+  folder        String
+  mainImage     String
+  specs         Json      // [{label, value}]
+  options       Json?     // ["opcao1", "opcao2"]
+  optionLabel   String?
+  tip           String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relacoes
+  images        ProductImage[]
+  orderItems    OrderItem[]
+
+  @@map("products")
+}
+
+// Imagens dos produtos
+model ProductImage {
+  id            String    @id @default(cuid())
+  productId     String
+  imageUrl      String
+  sortOrder     Int       @default(0)
+  createdAt     DateTime  @default(now())
+
+  // Relacoes
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+// Pedidos
+model Order {
+  id            String    @id @default(cuid())
+  orderNumber   String    @unique
+  userId        String?
+  customerName  String
+  customerEmail String
+  customerPhone String
+  status        OrderStatus @default(PENDING)
+  paymentMethod String
+  paymentId     String?
+  subtotal      Decimal   @db.Decimal(10, 2)
+  discount      Decimal   @db.Decimal(10, 2) @default(0)
+  total         Decimal   @db.Decimal(10, 2)
+  notes         String?
+  addressId     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relacoes
+  user          User?     @relation(fields: [userId], references: [id])
+  address       Address?  @relation(fields: [addressId], references: [id])
+  items         OrderItem[]
+  payments      Payment[]
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  PENDING       // Aguardando pagamento
+  CONFIRMED     // Pagamento confirmado
+  PROCESSING    // Preparando envio
+  SHIPPED       // Enviado
+  DELIVERED     // Entregue
+  CANCELLED     // Cancelado
+  REFUNDED      // Estornado
+}
+
+// Itens do pedido
+model OrderItem {
+  id            String    @id @default(cuid())
+  orderId       String
+  productId     String
+  productName   String
+  productPrice  Decimal   @db.Decimal(10, 2)
+  quantity      Int
+  option        String?
+  createdAt     DateTime  @default(now())
+
+  // Relacoes
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product       Product   @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+// Pagamentos
+model Payment {
+  id            String    @id @default(cuid())
+  orderId       String
+  method        String
+  transactionId String?
+  status        PaymentStatus @default(PENDING)
+  amount        Decimal   @db.Decimal(10, 2)
+  paymentData   Json?     // Dados extras do pagamento
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relacoes
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  REFUNDED
+  ERROR
+}
+
+// Sessoes (para refresh tokens)
+model Session {
+  id            String    @id @default(cuid())
+  userId        String
+  token         String    @unique
+  userAgent     String?
+  ipAddress     String?
+  expiresAt     DateTime
+  createdAt     DateTime  @default(now())
+
+  // Relacoes
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
